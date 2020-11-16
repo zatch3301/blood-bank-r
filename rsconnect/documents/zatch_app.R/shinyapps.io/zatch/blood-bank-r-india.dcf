@@ -1,0 +1,12 @@
+name: blood-bank-r-india
+title: blood-bank-r-india
+username:
+account: zatch
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3242608
+bundleId: 3867249
+url: https://zatch.shinyapps.io/blood-bank-r-india/
+when: 1605541143.98807
+asMultiple: FALSE
+asStatic: FALSE
