@@ -61,8 +61,7 @@ server <- function(input, output, session) {
                 na.label = "Not Available" )
   })
   
-  
-  
+
   output$mytable <- DT::renderDataTable({
     bb_data %>% 
       clean_names() %>% 
