@@ -21,17 +21,23 @@ ui <- navbarPage("Blood Bank", id="mainnavbar",
   )
 
 server <- function(input, output, session) {
- read_csv("blood-banks.csv", 
-           col_types = cols(Latitude = col_double(), 
-                            Longitude = col_double())) %>% 
+ read_csv("blood-banks-new.csv",
+           col_types = cols(Latitude = col_double(),
+                            Longitude = col_double())) %>%
     select(c(-1)) %>% 
     clean_names() %>%
-    filter(latitude != '#N/A',
-    longitude != '#N/A') -> bb_data
+    filter(latitude != 'NA',
+    longitude != 'NA') -> bb_data
+  
   
   # bb_data$category %>% unique()
   pal <- colorFactor(pal = c("#1b9e77", "#d95f02", "#7570b3"), 
                      domain = c("Charity", "Government", "Private"))
+  
+  # bb_data$blood_bank_name <- gsub("[0-9@!$;:,.#&() \\-\\/]","",bb_data$blood_bank_name)
+  # bb_data$district <- gsub("[0-9@!$;:,.#&() \\-\\/]","",bb_data$district)
+  # bb_data$blood_bank_name %>% View()
+  # as.character(bb_data$blood_bank_name)
     
   output$bbmap <- renderLeaflet({
     bb_data %>% 
@@ -43,12 +49,11 @@ server <- function(input, output, session) {
                                              direction = "auto"),
                  clusterOptions = markerClusterOptions(),
                  color = ~pal(bb_data$category),
-                 popup =  paste0("<b>Name : </b>",as.raw(bb_data$blood_bank_name),"<br>",
-                                 "<b>District : </b>",as.character(bb_data$district),"<br>",
-                                 "<b>City : </b>",as.character(bb_data$city),"<br>",
-                                 "<b>State : </b>",as.character(bb_data$state),"<br>",
-                                 "<b>Pincode : </b>",as.integer(bb_data$pincode),"<br>",
-                                 "<b>Contact : </b>",as.character(bb_data$contact_no),"<br>",
+                 popup =  paste0("<b>Name : </b>",bb_data$blood_bank_name,"<br/>",
+                                 "<b>District : </b>",bb_data$district,"<br/>",
+                                 "<b>City : </b>",as.character(bb_data$city),"<br/>",
+                                 "<b>State : </b>",as.character(bb_data$state),"<br/>",
+                                 "<b>Contact : </b>",as.character(bb_data$contact_no),"<br/>",
                                  "<b>Website : </b>",as.character(bb_data$website))) %>% 
       addLegend(position = "bottomright",
                 pal = pal, 
