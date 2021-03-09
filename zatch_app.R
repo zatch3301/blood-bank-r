@@ -5,8 +5,8 @@ library(janitor)
 library(plotly)
 library( htmltools)
 library(DT)
+library(ggplot2)
 library(dplyr)
-library(formattable)
 
 ui <- navbarPage("Blood Bank", id="mainnavbar",
                  tabPanel("Map", leafletOutput("bbmap", width = "100%", height = 800)),
@@ -30,14 +30,9 @@ server <- function(input, output, session) {
     longitude != 'NA') -> bb_data
   
   
-  # bb_data$category %>% unique()
   pal <- colorFactor(pal = c("#1b9e77", "#d95f02", "#7570b3"), 
                      domain = c("Charity", "Government", "Private"))
   
-  # bb_data$blood_bank_name <- gsub("[0-9@!$;:,.#&() \\-\\/]","",bb_data$blood_bank_name)
-  # bb_data$district <- gsub("[0-9@!$;:,.#&() \\-\\/]","",bb_data$district)
-  # bb_data$blood_bank_name %>% View()
-  # as.character(bb_data$blood_bank_name)
     
   output$bbmap <- renderLeaflet({
     bb_data %>% 
@@ -84,7 +79,7 @@ server <- function(input, output, session) {
         labs(x = "State",
              y = "No.of Blood Bank",
              title = "Blood Banks",
-             caption = "By gagan")+
+             caption = "By gagan and gulshan")+
         theme_minimal()+
         theme(axis.text.x = element_text(size = 10,
                                          face = "bold",
